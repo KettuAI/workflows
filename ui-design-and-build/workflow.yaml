@@ -1,0 +1,98 @@
+format: 1
+name: Design and build a UI change
+description: Draft three directions for a screen, let you pick one, build it, then check the result in light and dark and at small and large sizes before review.
+locales:
+  zh-CN:
+    name: 界面设计并实现
+    description: 先给一个界面画三个方向的草稿，由你挑一个，做出来后在浅色、深色和大小窗口下逐一核对，再审查代码。
+    steps:
+      drafts: 画草稿
+      pick: 你来挑
+      build: 实现
+      visual-check: 视觉核对
+      review: 代码审查
+send_back_limit: 3
+steps:
+  - id: drafts
+    name: Drafts
+    hand_in: document
+    hint: Visual design; prefer a strong model.
+    prompt: |
+      Design the interface change the requirement asks for. Study the project's existing screens,
+      design tokens and components first, so the drafts look like they belong. Change no project
+      file.
+
+      Make three clearly different directions as a page artifact the person can look at, each in
+      light and dark with real content, built from the project's own colors, type and spacing.
+      Then write a document artifact that names the page, describes each direction with its
+      trade-offs, and recommends one.
+
+      If you were sent back, use the person's note: refine the direction they liked or try new
+      ones, as they say.
+    outcomes:
+      - name: Done
+        to: pick
+
+  - id: pick
+    name: Pick a direction
+    by: you
+    prompt: Look at the three directions. Build one of them (say which in your note, with any changes), or ask for new drafts?
+    outcomes:
+      - name: Build it
+        to: build
+      - name: New drafts
+        to: drafts
+
+  - id: build
+    name: Build
+    hand_in: note
+    hint: Interface work; pick by how much the screens change.
+    prompt: |
+      Build the direction the person picked, with the changes in their note, using the
+      project's components and tokens rather than new one-off styles. Cover every state: loading,
+      empty, error, hover, focus and disabled. Run the project's checks and commit your work on
+      the current branch.
+
+      If you were sent back, fix every point you were given first. In your note, say what you
+      built and how to reach it in the running app.
+    outcomes:
+      - name: Done
+        to: visual-check
+
+  - id: visual-check
+    name: Visual check
+    hand_in: outcome
+    review_of: [build]
+    hint: Running the app and judging screenshots; prefer a model that reads images well.
+    prompt: |
+      Run the app and look at every screen the change touches, in light and dark, at a small
+      and a large window size, in each state the build note lists. Take screenshots and compare
+      them with the picked draft: layout, spacing, alignment, colors, type, truncation and
+      motion. Do not change any file.
+
+      Report Matches when it looks right. Report Fix needed otherwise, listing every problem with
+      the screen, the state and the size, and attach the screenshots' paths.
+    outcomes:
+      - name: Matches
+        to: review
+      - name: Fix needed
+        to: build
+
+  - id: review
+    name: Code review
+    hand_in: outcome
+    review_of: [build]
+    hint: Another agent than the builder when one is available.
+    prompt: |
+      Review the code on this branch. Read the diff from the branch's base and look for bugs,
+      raw colors or sizes where the project has tokens, duplicated components, missing states,
+      accessibility problems (labels, focus, contrast, keyboard) and anything that slows the
+      screen down. Run the project's checks. Do not change any file.
+
+      Report Approved when it is ready. Report Changes needed otherwise, listing every problem
+      with its file and what is wrong.
+    outcomes:
+      - name: Approved
+        end: done
+      - name: Changes needed
+        to: build

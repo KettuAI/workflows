@@ -1,0 +1,98 @@
+format: 1
+name: Incident investigation
+description: Gather the evidence, find and prove the root cause for your review, fix it with a regression test, and write a blameless postmortem.
+locales:
+  zh-CN:
+    name: 故障调查
+    description: 收集证据，找到并证明根因交你审阅，带回归测试修好，最后写一份不追责的复盘。
+    steps:
+      evidence: 收集证据
+      root-cause: 根因分析
+      fix: 修复
+      review: 审查修复
+      postmortem: 复盘
+send_back_limit: 3
+steps:
+  - id: evidence
+    name: Gather evidence
+    hand_in: note
+    hint: Reading logs and history; a mid-size model is usually enough.
+    prompt: |
+      The requirement describes an incident: an outage, wrong data, a crash or a regression.
+      Gather the evidence before forming a theory: the error messages and logs it gives or that
+      the project writes locally, the code paths they point at, and the changes around the time
+      it started (the git log, merged pull requests, dependency and configuration changes).
+      Change no file and touch no production system.
+
+      In your note, write the timeline as far as you can tell it, the evidence with where it
+      came from, and what is still unknown.
+    outcomes:
+      - name: Done
+        to: root-cause
+
+  - id: root-cause
+    name: Root cause
+    hand_in: document
+    you_review: true
+    hint: Debugging and reasoning; prefer a strong model.
+    prompt: |
+      Find the root cause. Form hypotheses from the evidence and test each one: reproduce the
+      failure locally with a test or a script, or show from the code and history that nothing
+      else explains it. Keep asking why until you reach the cause, not the symptom. Change no
+      project file and remove any scratch file you add.
+
+      Write a document artifact with the root cause, how you proved it, why it was not caught,
+      what else it affects, and the fix you propose with how to prevent the whole class of
+      problem.
+
+      If you were sent back, address every point you were given and every comment on the
+      document.
+    outcomes:
+      - name: Done
+        to: fix
+
+  - id: fix
+    name: Fix
+    hand_in: note
+    hint: Pick by the size of the fix; a strong model for stored data or concurrency.
+    prompt: |
+      Fix the root cause as the approved document proposes. First add a test that reproduces
+      the failure and fails, then make it pass. Add the prevention the document agreed on if it
+      fits in this change. Run the project's checks and commit your work on the current branch.
+
+      If you were sent back, fix every point you were given first. In your note, say what you
+      changed and how you checked it.
+    outcomes:
+      - name: Done
+        to: review
+
+  - id: review
+    name: Review the fix
+    hand_in: outcome
+    review_of: [fix]
+    hint: Another agent than the one that fixed it when one is available.
+    prompt: |
+      Review the fix on this branch against the root cause document. Check that it fixes the
+      cause and not a symptom, that the regression test fails without it, that it breaks nothing
+      else, and that the checks pass. Do not change any file.
+
+      Report Approved when it is ready. Report Changes needed otherwise, listing every problem
+      with its file and what is wrong.
+    outcomes:
+      - name: Approved
+        to: postmortem
+      - name: Changes needed
+        to: fix
+
+  - id: postmortem
+    name: Postmortem
+    hand_in: document
+    hint: Clear writing; a mid-size model is enough.
+    prompt: |
+      Write a blameless postmortem as a document artifact: a summary, the impact, the timeline,
+      the root cause, how it was found and fixed, what went well and what did not, and action
+      items with what each prevents. Describe systems and decisions, never blame people. Change
+      no file.
+    outcomes:
+      - name: Done
+        end: done

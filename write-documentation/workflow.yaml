@@ -1,0 +1,65 @@
+format: 1
+name: Write documentation
+description: Outline the docs from the code for your review, write them, then check every claim, command and example against the real code before they are done.
+locales:
+  zh-CN:
+    name: 写文档
+    description: 先根据代码列出文档大纲给你审阅，再写成文档，最后把每个说法、命令和示例都对着真实代码核对一遍。
+    steps:
+      outline: 大纲
+      write: 写作
+      fact-check: 核对
+send_back_limit: 3
+steps:
+  - id: outline
+    name: Outline
+    hand_in: document
+    you_review: true
+    hint: Reading code and planning; a mid-size model is usually enough.
+    prompt: |
+      Plan the documentation the requirement asks for. Read the code and any docs that exist,
+      and find where the project keeps its documentation and how it is written. Change no file.
+
+      Write a document artifact with: who the docs are for and what they need to do with them,
+      the pages or sections with a line on each, the examples you will include, where the files
+      will go, and what the existing docs get wrong or leave out.
+
+      If you were sent back, address every point you were given and every comment on the
+      document.
+    outcomes:
+      - name: Done
+        to: write
+
+  - id: write
+    name: Write
+    hand_in: note
+    hint: Clear technical writing; a mid-size or strong model.
+    prompt: |
+      Write the documentation as the approved outline says, in the project's docs location and
+      style. Prefer short sentences and real examples. Every command and code sample must be one
+      you ran or checked against the code. Commit your work on the current branch.
+
+      If you were sent back, fix every point you were given first. In your note, list the files
+      you wrote or changed.
+    outcomes:
+      - name: Done
+        to: fact-check
+
+  - id: fact-check
+    name: Fact-check
+    hand_in: outcome
+    review_of: [write]
+    hint: Another agent than the writer when one is available.
+    prompt: |
+      Check the new documentation against the code. For every claim about behavior, option,
+      default, error and file, find where the code says so. Run every command and code sample
+      that is safe to run locally and compare what happens with what the docs say. Check links.
+      Do not change any file.
+
+      Report Accurate when everything holds. Report Errors found otherwise, listing each wrong
+      or unclear passage with the file, what the code really does and how you checked it.
+    outcomes:
+      - name: Accurate
+        end: done
+      - name: Errors found
+        to: write

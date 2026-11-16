@@ -1,0 +1,88 @@
+format: 1
+name: Compare two approaches
+description: Define the question and how to judge the answer, build two quick prototypes at once in separate branches, then compare them with evidence for your decision.
+locales:
+  zh-CN:
+    name: 两种方案对比
+    description: 先定下问题和评判标准，在两个分支里同时做两个快速原型，再用证据对比，交给你决定。
+    steps:
+      frame: 定问题
+      approach-a: 方案 A
+      approach-b: 方案 B
+      compare: 对比
+send_back_limit: 2
+steps:
+  - id: frame
+    name: Frame
+    hand_in: document
+    you_review: true
+    hint: Framing a technical choice; prefer a strong model.
+    prompt: |
+      The requirement asks to choose between two ways of doing something, or names a problem
+      with two plausible solutions. Read the code it touches. Change no file.
+
+      Write a document artifact with: the decision to make, approach A and approach B described
+      well enough to prototype, what each prototype must show (the smallest slice that answers
+      the question), and the criteria and measurements to compare them by, such as performance,
+      complexity, risk and how well each fits the codebase.
+
+      If you were sent back, address every point you were given and every comment on the
+      document.
+    outcomes:
+      - name: Done
+        to: [approach-a, approach-b]
+
+  - id: approach-a
+    name: Approach A
+    hand_in: note
+    hint: Quick prototyping; a mid-size or strong model.
+    prompt: |
+      Prototype approach A from the approved document, on this branch only; another agent builds
+      approach B at the same time on its own branch. Build the smallest slice the document asks
+      for, take the measurements it names, and note every surprise and cost you hit. Prototype
+      quality is fine; do not polish. Commit your work before you report.
+
+      In your note, give the measurements, what was hard, and what you would worry about in a
+      full build.
+    outcomes:
+      - name: Done
+        to: compare
+
+  - id: approach-b
+    name: Approach B
+    hand_in: note
+    hint: Quick prototyping; a mid-size or strong model, ideally another agent than approach A.
+    prompt: |
+      Prototype approach B from the approved document, on this branch only; another agent builds
+      approach A at the same time on its own branch. Build the smallest slice the document asks
+      for, take the measurements it names, and note every surprise and cost you hit. Prototype
+      quality is fine; do not polish. Commit your work before you report.
+
+      In your note, give the measurements, what was hard, and what you would worry about in a
+      full build.
+    outcomes:
+      - name: Done
+        to: compare
+
+  - id: compare
+    name: Compare
+    hand_in: document
+    you_review: true
+    review_of: [approach-a, approach-b]
+    hint: Weighing evidence fairly; prefer a strong model.
+    prompt: |
+      Both prototypes are merged into this folder; if they conflict, keep both readable side by
+      side or describe each from its notes. Compare them against the criteria in the frame
+      document, rerunning the measurements yourself where you can. Change no project file beyond
+      finishing a merge.
+
+      Write a document artifact with a table of the criteria and how each approach scored, the
+      evidence behind each score, the risks of each in a full build, and your recommendation with
+      the one fact that decides it. The prototypes are for learning: say what to keep and what
+      to throw away.
+
+      If you were sent back, address every point you were given and every comment on the
+      document.
+    outcomes:
+      - name: Done
+        end: done

@@ -1,0 +1,104 @@
+format: 1
+name: Pull request review
+description: Read a pull request, review it for bugs and for security on two agents at once, check every finding before you see it, then post the review once you approve it.
+locales:
+  zh-CN:
+    name: Pull Request 审查
+    description: 读一个 Pull Request，两个 Agent 同时分别审查 Bug 和安全，每条发现先核实再给你看，你批准后再把审查发到 PR 上。
+    steps:
+      scope: 摸清改动
+      correctness: 审查正确性
+      security: 审查安全
+      consolidate: 核实和汇总
+      post: 发布审查
+send_back_limit: 2
+steps:
+  - id: scope
+    name: Scope
+    hand_in: note
+    hint: Reading only; a mid-size model is enough.
+    prompt: |
+      The requirement names a pull request, a branch or a range of commits to review. Find it
+      (with the GitHub CLI for a pull request), read its description and the whole diff from its
+      base, and read enough of the surrounding code to understand what it touches. Change no file.
+
+      In your note, write: what the change does in a few sentences, the files and areas it
+      touches, how to get the diff again (the exact command), what the author says was tested,
+      and the parts most likely to hide a bug or a security problem. The reviewers that follow
+      read only your note and the diff.
+    outcomes:
+      - name: Done
+        to: [correctness, security]
+
+  - id: correctness
+    name: Correctness review
+    hand_in: note
+    hint: Careful reading of logic; prefer a strong model.
+    prompt: |
+      Review the change for correctness. Read the diff and the code around it, and look for
+      logic errors, unhandled edge cases and failures, race conditions, broken contracts with
+      callers, missing or weak tests, and anything the description promises that the code does
+      not do. Run the project's tests if that is quick. Change no file.
+
+      In your note, list every finding with its file and line, what goes wrong, a concrete input
+      or sequence that triggers it, and how sure you are. Leave style and taste out; say plainly
+      if you found nothing.
+    outcomes:
+      - name: Done
+        to: consolidate
+
+  - id: security
+    name: Security review
+    hand_in: note
+    hint: Security reasoning; prefer a strong model, ideally another agent than the correctness review.
+    prompt: |
+      Review the change for security only. Look at what crosses a trust boundary: user input,
+      files, network requests and responses, shell commands, SQL, HTML, deserialization,
+      authentication and permissions, secrets and what is logged. Change no file.
+
+      In your note, list every finding with its file and line, how an attacker reaches it, what
+      they gain, and how sure you are. Say plainly if the change touches nothing security
+      sensitive.
+    outcomes:
+      - name: Done
+        to: consolidate
+
+  - id: consolidate
+    name: Verify and consolidate
+    hand_in: document
+    you_review: true
+    review_of: [correctness, security]
+    hint: Checking others' claims; prefer a strong model.
+    prompt: |
+      Both reviews are in. Try to prove each finding wrong: read the code it points at, follow
+      the path it describes, and run the code or a small test where that settles it. Drop what
+      does not hold up and merge duplicates. Change no project file.
+
+      Write a document artifact with the review as it would be posted: a one-paragraph summary,
+      then each confirmed finding with its severity (blocking, should fix, minor), file and line,
+      what goes wrong and a suggested fix. End with the findings you dropped and why, so the
+      person can disagree.
+
+      If you were sent back, address every point you were given and every comment on the
+      document.
+    outcomes:
+      - name: Done
+        to: post
+
+  - id: post
+    name: Post the review
+    hand_in: outcome
+    hint: Mechanical work; the fastest model is enough.
+    prompt: |
+      The review was approved. If the requirement names a GitHub pull request, post the approved
+      document on it with the GitHub CLI: one review comment with the summary, and the findings
+      as inline comments on their lines where the CLI allows it. Do not approve or request
+      changes on the pull request, and do not merge it.
+
+      Report Posted with the review's link, or Not a pull request when there was nothing to post
+      it on; the document stays as the result.
+    outcomes:
+      - name: Posted
+        end: done
+      - name: Not a pull request
+        end: done

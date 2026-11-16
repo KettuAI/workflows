@@ -1,0 +1,84 @@
+format: 1
+name: Safe refactor
+description: Pin today's behavior with tests first, refactor without changing it, then have another agent confirm nothing changed and no test was weakened.
+locales:
+  zh-CN:
+    name: 安全重构
+    description: 先用测试钉住现在的行为，再在不改变行为的前提下重构，最后换一个 Agent 确认行为没变、测试没被放松。
+    steps:
+      plan: 重构计划
+      pin: 钉住行为
+      refactor: 重构
+      review: 审查
+send_back_limit: 3
+steps:
+  - id: plan
+    name: Plan
+    hand_in: document
+    you_review: true
+    hint: Design judgment; prefer a strong model for a large refactor.
+    prompt: |
+      Plan the refactor the requirement asks for. Read the code it touches and everything that
+      calls it. Change no file.
+
+      Write a document artifact with: what is wrong with the code today, the shape it should
+      have, the steps to get there in an order where every step keeps the code working, the
+      public behavior that must not change (inputs, outputs, errors, side effects, performance
+      that matters), and how much of that behavior the existing tests already cover.
+
+      If you were sent back, address every point you were given and every comment on the
+      document.
+    outcomes:
+      - name: Done
+        to: pin
+
+  - id: pin
+    name: Pin behavior
+    hand_in: note
+    hint: Test writing; a mid-size model is usually enough.
+    prompt: |
+      Before anything is refactored, pin the behavior the plan says must not change. Add tests
+      that describe what the code does today, including its edge cases and errors, where the
+      existing tests leave gaps. Do not change the code under test. Every new test must pass on
+      the current code. Run the project's checks and commit the tests on the current branch.
+
+      In your note, list the behaviors now covered and any you could not cover and why.
+    outcomes:
+      - name: Done
+        to: refactor
+
+  - id: refactor
+    name: Refactor
+    hand_in: note
+    hint: The main work; pick a strong model unless the change is small.
+    prompt: |
+      Refactor as the plan says, in small steps, running the tests after each. Do not change
+      public behavior and do not edit, skip or loosen any existing test, including the ones just
+      added; a test that needs changing means the behavior changed. Commit as you go with clear
+      messages.
+
+      If you were sent back, fix every point you were given first. In your note, say what you
+      changed, anything in the plan you did differently and why, and the result of the checks.
+    outcomes:
+      - name: Done
+        to: review
+
+  - id: review
+    name: Review
+    hand_in: outcome
+    review_of: [refactor]
+    hint: Another agent than the one that refactored when one is available.
+    prompt: |
+      Review the refactor on this branch. Read the diff from the branch's base. Check that no
+      test was edited, skipped or loosened after the pinning commit, that public behavior is the
+      same (look for changed error handling, ordering, defaults and side effects the tests may
+      miss), that the code now has the shape the plan describes, and that the checks pass. Do not
+      change any file.
+
+      Report Approved when it is ready. Report Changes needed otherwise, listing every problem
+      with its file and what is wrong.
+    outcomes:
+      - name: Approved
+        end: done
+      - name: Changes needed
+        to: refactor

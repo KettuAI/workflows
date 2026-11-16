@@ -1,0 +1,84 @@
+format: 1
+name: Test-first feature
+description: Write the behavior down as a spec for your review, turn it into failing tests, then build until they pass without touching the tests.
+locales:
+  zh-CN:
+    name: 测试先行开发
+    description: 先把行为写成规格交你审阅，再把它变成会失败的测试，然后开发到测试全部通过，过程中不许改测试。
+    steps:
+      spec: 写规格
+      tests: 写测试
+      build: 开发
+      review: 代码审查
+send_back_limit: 3
+steps:
+  - id: spec
+    name: Spec
+    hand_in: document
+    you_review: true
+    hint: Pinning down behavior; prefer a strong model for anything subtle.
+    prompt: |
+      Write the behavior the requirement asks for as a spec. Read the code it touches first.
+      Change no file.
+
+      Write a document artifact with the behavior as concrete examples: given this input or
+      state, this happens. Cover the normal cases, the edge cases and every error, and say what
+      is out of scope. Each example should become one test.
+
+      If you were sent back, address every point you were given and every comment on the
+      document.
+    outcomes:
+      - name: Done
+        to: tests
+
+  - id: tests
+    name: Tests
+    hand_in: note
+    hint: Test writing; a mid-size model is usually enough.
+    prompt: |
+      Turn every example in the approved spec into a test, in the project's test style and
+      tools. Add only the smallest stubs the tests need to compile or load. Run them and confirm
+      each one fails for the right reason, not because of a typo or a missing import. Commit the
+      tests on the current branch.
+
+      If you were sent back, fix every point you were given first. In your note, map each spec
+      example to its test.
+    outcomes:
+      - name: Done
+        to: build
+
+  - id: build
+    name: Build
+    hand_in: note
+    hint: The main work; pick a strong model unless the change is small.
+    prompt: |
+      Build the feature until every test from the tests step passes. Do not edit, skip or
+      loosen those tests; if one looks wrong, stop and say so in your note instead. Run the
+      project's checks and commit your work on the current branch.
+
+      If you were sent back, fix every point you were given first. In your note, say what you
+      built and the result of the checks.
+    outcomes:
+      - name: Done
+        to: review
+
+  - id: review
+    name: Code review
+    hand_in: outcome
+    review_of: [build]
+    hint: Another agent than the builder when one is available.
+    prompt: |
+      Review the change on this branch against the spec. Check that the tests were not changed
+      after the tests step's commit, that the code does what the spec says and not just what the
+      tests check, and look for bugs and missed edge cases. Run the project's checks. Do not
+      change any file.
+
+      Report Approved when it is ready. Report Changes needed when the code must change, and
+      Tests wrong when a test does not match the spec; list every problem with its file.
+    outcomes:
+      - name: Approved
+        end: done
+      - name: Changes needed
+        to: build
+      - name: Tests wrong
+        to: tests

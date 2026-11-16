@@ -1,0 +1,99 @@
+format: 1
+name: Research report
+description: Agree the questions with you, research them from two angles at once, write one report with sources, and fact-check every claim before you get it.
+locales:
+  zh-CN:
+    name: 调研报告
+    description: 先和你定下要回答的问题，再从两个角度同时调研，写成一份带出处的报告，交给你之前逐条核实。
+    steps:
+      scope: 定范围
+      evidence: 正面证据
+      counterpoints: 反面和替代
+      synthesize: 写报告
+      fact-check: 核实
+send_back_limit: 2
+steps:
+  - id: scope
+    name: Scope
+    hand_in: document
+    you_review: true
+    hint: Framing the question; a mid-size model is usually enough.
+    prompt: |
+      Turn the requirement into a research plan. Change no file.
+
+      Write a document artifact with: the decision or question the research serves, the
+      specific questions to answer, what is out of scope, the kinds of sources to trust (primary
+      sources, official documentation, data, the project's own code and history) and the ones to
+      treat with care, and what the final report should look like.
+
+      If you were sent back, address every point you were given and every comment on the
+      document.
+    outcomes:
+      - name: Done
+        to: [evidence, counterpoints]
+
+  - id: evidence
+    name: Evidence
+    hand_in: document
+    hint: Searching and reading; a mid-size or strong model.
+    prompt: |
+      Answer the approved questions from the best sources you can reach: primary sources,
+      official documentation, data and, where it applies, the project's own code. Another agent
+      looks for counterpoints and alternatives at the same time, so go deep on the main line.
+      Change no project file.
+
+      Write a document artifact with what you found for each question, every claim tied to its
+      source (a link, a file and line, or a quote), the date of each source, and how confident
+      you are.
+    outcomes:
+      - name: Done
+        to: synthesize
+
+  - id: counterpoints
+    name: Counterpoints
+    hand_in: document
+    hint: Searching and skeptical reading; a mid-size or strong model.
+    prompt: |
+      Look for what would change the answer to the approved questions: evidence against the
+      obvious conclusion, known failures and limits, alternatives and how they compare, and what
+      critics or users report. Another agent researches the main line at the same time. Change
+      no project file.
+
+      Write a document artifact with what you found, every claim tied to its source and date,
+      and how confident you are.
+    outcomes:
+      - name: Done
+        to: synthesize
+
+  - id: synthesize
+    name: Write the report
+    hand_in: document
+    hint: Weighing evidence and writing; prefer a strong model.
+    prompt: |
+      Write the report the approved scope asks for as a document artifact, from both research
+      documents. Lead with the answer and a recommendation, then the reasoning question by
+      question, where the evidence disagrees and why you weigh it as you do, what is still
+      uncertain, and the sources. Keep every claim tied to a source from the research.
+
+      If you were sent back, fix every point you were given first.
+    outcomes:
+      - name: Done
+        to: fact-check
+
+  - id: fact-check
+    name: Fact-check
+    hand_in: outcome
+    review_of: [synthesize]
+    hint: Another agent than the writer when one is available.
+    prompt: |
+      Check the report against its sources. Open each cited source and confirm it says what the
+      report claims, look for claims without a source, numbers that do not match, outdated
+      sources and conclusions stronger than the evidence. Change no file.
+
+      Report Accurate when the report holds. Report Errors found otherwise, listing each problem
+      with the passage and what the source really says.
+    outcomes:
+      - name: Accurate
+        end: done
+      - name: Errors found
+        to: synthesize

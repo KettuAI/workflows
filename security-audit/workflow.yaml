@@ -1,0 +1,133 @@
+format: 1
+name: Security audit
+description: Map the attack surface, hunt for vulnerabilities, verify each one before it is reported, and let you decide whether to fix them now.
+locales:
+  zh-CN:
+    name: 安全审计
+    description: 先画出攻击面，再找漏洞，每个漏洞核实后才写进报告，由你决定要不要现在修。
+    steps:
+      map: 攻击面
+      hunt: 找漏洞
+      verify: 核实
+      report: 审计报告
+      decide: 你来决定
+      fix: 修复
+      fix-review: 审查修复
+send_back_limit: 3
+steps:
+  - id: map
+    name: Attack surface
+    hand_in: document
+    hint: Broad reading and judgment; prefer a strong model.
+    prompt: |
+      Audit the part of the project the requirement names, or the whole project if it names
+      none. Change no file.
+
+      Write a document artifact that maps the attack surface: what the software does and who
+      uses it, every entry point (network endpoints, command line, files read, messages, IPC,
+      plugins), the trust boundaries and what crosses them, where secrets and personal data live
+      and travel, the dependencies that handle untrusted input, and the threats that matter most
+      for this project, ranked. This map guides the hunt, so be specific about files.
+    outcomes:
+      - name: Done
+        to: hunt
+
+  - id: hunt
+    name: Hunt
+    hand_in: note
+    hint: Security reasoning over a lot of code; prefer a strong model.
+    prompt: |
+      Hunt for vulnerabilities along the attack surface document, the highest ranked threats
+      first: injection of any kind, broken authentication or authorization, path traversal,
+      unsafe deserialization, SSRF, secrets in code or logs, weak cryptography, missing
+      validation at trust boundaries, and dependencies with known advisories. Change no file.
+
+      In your note, list every candidate with its file and line, how an attacker reaches it,
+      what they gain, and the evidence you have. Include the ones you are unsure of and say so;
+      the next step checks them.
+    outcomes:
+      - name: Done
+        to: verify
+
+  - id: verify
+    name: Verify
+    hand_in: outcome
+    review_of: [hunt]
+    hint: Another agent than the hunt's when one is available.
+    prompt: |
+      Check every candidate from the hunt as a skeptic. Follow the attacker's path through the
+      real code, look for the validation or check that would stop it, and where it is safe to do
+      so, prove it with a small local test that never touches real services or data. Change no
+      project file and remove any test file you add.
+
+      In your note, list each candidate as confirmed, not exploitable (with what stops it) or
+      unsure, with your reasoning. Report Confirmed when at least one holds up, Nothing confirmed
+      otherwise.
+    outcomes:
+      - name: Confirmed
+        to: report
+      - name: Nothing confirmed
+        to: report
+
+  - id: report
+    name: Audit report
+    hand_in: document
+    you_review: true
+    hint: Clear writing; a mid-size model is usually enough.
+    prompt: |
+      Write the audit report as a document artifact: what was audited and how, a summary for a
+      reader who will not read further, then each confirmed vulnerability with its severity
+      (critical, high, medium, low), where it is, how it is exploited, its impact and a concrete
+      fix. Then the hardening suggestions that are not vulnerabilities, and what was out of scope
+      or not checked. Do not include the candidates that did not hold up, except as a count.
+
+      If you were sent back, address every point you were given and every comment on the
+      document.
+    outcomes:
+      - name: Done
+        to: decide
+
+  - id: decide
+    name: Decide
+    by: you
+    prompt: Read the audit report. Fix the confirmed vulnerabilities now, or keep the report and end here?
+    outcomes:
+      - name: Fix them now
+        to: fix
+      - name: Keep the report
+        end: done
+
+  - id: fix
+    name: Fix
+    hand_in: note
+    hint: Pick a strong model when a fix touches authentication, cryptography or stored data.
+    prompt: |
+      Fix the vulnerabilities in the approved audit report, the most severe first, unless the
+      person's note says which ones. For each, add a test that fails without the fix where the
+      project has tests for that part, and keep every change to what the fix needs. Run the
+      project's checks and commit your work on the current branch with a clear message per fix.
+
+      If you were sent back, fix every point you were given first. In your note, list each
+      vulnerability, what you changed and how you checked it.
+    outcomes:
+      - name: Done
+        to: fix-review
+
+  - id: fix-review
+    name: Review the fixes
+    hand_in: outcome
+    review_of: [fix]
+    hint: Another agent than the one that fixed it when one is available.
+    prompt: |
+      Review the fixes on this branch against the audit report. For each vulnerability, check
+      that the attacker's path is really closed, including variants of it, that the fix breaks
+      nothing else, and that its test would catch a regression. Run the project's checks. Do not
+      change any file.
+
+      Report Approved when every fix holds. Report Changes needed otherwise, listing every
+      problem with its file and what is wrong.
+    outcomes:
+      - name: Approved
+        end: done
+      - name: Changes needed
+        to: fix

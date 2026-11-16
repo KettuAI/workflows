@@ -1,0 +1,87 @@
+format: 1
+name: Dependency upgrade
+description: Survey outdated dependencies and their breaking changes, upgrade them in the order you approve, verify the build and tests, then open a pull request.
+locales:
+  zh-CN:
+    name: 依赖升级
+    description: 先盘点过时的依赖和它们的破坏性变更，按你批准的顺序升级，验证构建和测试，再开 Pull Request。
+    steps:
+      survey: 盘点
+      upgrade: 升级
+      verify: 验证
+      ship: 发布
+send_back_limit: 3
+steps:
+  - id: survey
+    name: Survey
+    hand_in: document
+    you_review: true
+    hint: Reading changelogs; a mid-size model is usually enough.
+    prompt: |
+      Find the project's outdated dependencies with its package manager, limited to the ones the
+      requirement names if it names any. For each, read its changelog or release notes between
+      the current and the latest version, and look for breaking changes that affect how this
+      project uses it. Change no file.
+
+      Write a document artifact with a table of the dependencies (current, target, major or not,
+      breaking changes that matter here, risk) and a proposed order in small groups, riskiest
+      last. Recommend holding back any upgrade whose cost is out of proportion, and say why.
+
+      If you were sent back, address every point you were given and every comment on the
+      document.
+    outcomes:
+      - name: Done
+        to: upgrade
+
+  - id: upgrade
+    name: Upgrade
+    hand_in: note
+    hint: Fixing breaking changes; pick a strong model for major versions.
+    prompt: |
+      Upgrade the dependencies as the approved survey says, one group at a time. After each
+      group, update the lockfile with the package manager, fix what the breaking changes broke
+      at its cause rather than by pinning or silencing it, run the project's checks, and commit
+      the group with a message naming what was upgraded.
+
+      If you were sent back, fix every point you were given first. In your note, list what was
+      upgraded, what you had to change, and anything you held back and why.
+    outcomes:
+      - name: Done
+        to: verify
+
+  - id: verify
+    name: Verify
+    hand_in: outcome
+    review_of: [upgrade]
+    hint: Running checks and reading diffs; a mid-size model is enough.
+    prompt: |
+      Verify the upgrade on this branch. Install from a clean state, run the build, the linters
+      and the full test suite, and start the application if the project can be started locally.
+      Read the diff from the branch's base and look for code changed only to silence an error,
+      new deprecation warnings, versions pinned without reason and unexpected new packages in the
+      lockfile. Do not change any file.
+
+      Report Passed when everything holds. Report Problems otherwise, listing each one and how to
+      reproduce it.
+    outcomes:
+      - name: Passed
+        to: ship
+      - name: Problems
+        to: upgrade
+
+  - id: ship
+    name: Ship
+    hand_in: outcome
+    hint: Mechanical work; the fastest model is enough.
+    prompt: |
+      Push the branch and open a pull request that lists the upgraded dependencies, their
+      breaking changes and what changed in the code because of them. Wait for its checks. Do not
+      merge it; the person merges it.
+
+      Report Opened with the pull request's link once its checks pass. Report Checks failed when
+      a check fails because of the upgrade, and say in your note which one and what it said.
+    outcomes:
+      - name: Opened
+        end: done
+      - name: Checks failed
+        to: upgrade

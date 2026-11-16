@@ -1,0 +1,98 @@
+format: 1
+name: Performance optimization
+description: Measure a baseline you can repeat, profile to find what is actually slow, fix it, and keep the change only if the same measurement shows a real gain.
+locales:
+  zh-CN:
+    name: 性能优化
+    description: 先测出能重复的基线，用分析工具找出真正慢的地方再改，同样的测量证明确实变快了才留下改动。
+    steps:
+      baseline: 测基线
+      profile: 找瓶颈
+      optimize: 优化
+      measure: 再测量
+      review: 代码审查
+send_back_limit: 3
+steps:
+  - id: baseline
+    name: Baseline
+    hand_in: document
+    hint: Setting up measurement; a mid-size model is usually enough.
+    prompt: |
+      Turn the requirement into something measurable: the operation that is slow, the metric
+      (time, memory, frames, requests per second, bundle size) and the target if one is given.
+      Build a repeatable measurement for it: an existing benchmark, or a small script or test
+      that runs the operation on realistic input. Run it at least five times and record the
+      median and the spread, with the machine and settings. If you added a benchmark, commit it.
+
+      Write a document artifact with the metric, how to run the measurement, the baseline
+      numbers and anything that makes them noisy.
+    outcomes:
+      - name: Done
+        to: profile
+
+  - id: profile
+    name: Profile
+    hand_in: document
+    hint: Reading profiles and code; prefer a strong model.
+    prompt: |
+      Find where the time or memory goes, with a profiler or tracing rather than by reading
+      code alone. Run the measurement from the baseline under the profiler and follow the
+      hottest paths into the code. Change no project file.
+
+      Write a document artifact with the bottlenecks ranked by their share of the cost, the
+      evidence for each, and the fix you propose for the top ones with its expected gain and
+      risk. If you were sent back because a fix did not help, say what that tells you and look
+      again.
+    outcomes:
+      - name: Done
+        to: optimize
+
+  - id: optimize
+    name: Optimize
+    hand_in: note
+    hint: Pick a strong model when the fix changes algorithms or concurrency.
+    prompt: |
+      Implement the top fix from the profile, or the one the note you were sent back with asks
+      for. Keep behavior the same and keep the change as small as the gain allows. Run the
+      project's checks and commit your work on the current branch.
+
+      If you were sent back, fix every point you were given first. In your note, say what you
+      changed and why you expect it to help.
+    outcomes:
+      - name: Done
+        to: measure
+
+  - id: measure
+    name: Measure again
+    hand_in: outcome
+    hint: Running the benchmark and comparing; a mid-size model is enough.
+    prompt: |
+      Run the baseline's measurement again, the same way and on the same machine, at least five
+      times. Compare the median and spread with the baseline. Do not change any file.
+
+      Report Faster when the gain is clearly larger than the noise, and give the numbers. Report
+      No real gain otherwise, with the numbers and what you saw; the work goes back to profiling.
+    outcomes:
+      - name: Faster
+        to: review
+      - name: No real gain
+        to: profile
+
+  - id: review
+    name: Code review
+    hand_in: outcome
+    review_of: [optimize]
+    hint: Another agent than the one that optimized when one is available.
+    prompt: |
+      Review the optimization on this branch. Read the diff from the branch's base, and look for
+      changed behavior, broken edge cases, caches that can go stale, new concurrency problems and
+      code made much harder to read for a small gain. Run the project's checks. Do not change any
+      file.
+
+      Report Approved when it is ready. Report Changes needed otherwise, listing every problem
+      with its file and what is wrong.
+    outcomes:
+      - name: Approved
+        end: done
+      - name: Changes needed
+        to: optimize
