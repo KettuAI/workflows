@@ -1,10 +1,12 @@
 format: 1
 name: Write documentation
 description: Outline the docs from the code for your review, write them, then check every claim, command and example against the real code before they are done.
+when: Use when documentation needs an agreed outline and examples checked against the code.
 locales:
   zh-CN:
     name: 写文档
     description: 先根据代码列出文档大纲给你审阅，再写成文档，最后把每个说法、命令和示例都对着真实代码核对一遍。
+    when: 文档需要先确认大纲，再对照代码核实命令和示例时使用。
     steps:
       outline: 大纲
       write: 写作

@@ -1,10 +1,12 @@
 format: 1
 name: Test-first feature
 description: Write the behavior down as a spec for your review, turn it into failing tests, then build until they pass without touching the tests.
+when: Use when a feature has behavior that can be specified and tested before its implementation.
 locales:
   zh-CN:
     name: 测试先行开发
     description: 先把行为写成规格交你审阅，再把它变成会失败的测试，然后开发到测试全部通过，过程中不许改测试。
+    when: 功能行为能在实现前写清楚，并能先用测试验证时使用。
     steps:
       spec: 写规格
       tests: 写测试

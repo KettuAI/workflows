@@ -1,10 +1,12 @@
 format: 1
 name: Security audit
 description: Map the attack surface, hunt for vulnerabilities, verify each one before it is reported, and let you decide whether to fix them now.
+when: Use for an authorized review of a codebase for security weaknesses and a decision on what to fix.
 locales:
   zh-CN:
     name: 安全审计
     description: 先画出攻击面，再找漏洞，每个漏洞核实后才写进报告，由你决定要不要现在修。
+    when: 获得授权后，需要检查代码库的安全问题并决定修复范围时使用。
     steps:
       map: 攻击面
       hunt: 找漏洞

@@ -1,10 +1,12 @@
 format: 1
 name: Pull request review
 description: Read a pull request, review it for bugs and for security on two agents at once, check every finding before you see it, then post the review once you approve it.
+when: Use when an existing pull request needs a review for both correctness and security before you post feedback.
 locales:
   zh-CN:
     name: Pull Request 审查
     description: 读一个 Pull Request，两个 Agent 同时分别审查 Bug 和安全，每条发现先核实再给你看，你批准后再把审查发到 PR 上。
+    when: 已有 PR，在发布审查意见前需要同时检查正确性和安全性时使用。
     steps:
       scope: 摸清改动
       correctness: 审查正确性

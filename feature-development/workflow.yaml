@@ -1,10 +1,12 @@
 format: 1
 name: Feature development
 description: Research whether it is worth doing, design and plan it with your review, build it, review the code on another agent, then ship it.
+when: Use for a new feature that needs research, design approval, implementation, review and release.
 locales:
   zh-CN:
     name: 功能开发
     description: 先调研值不值得做，设计和计划经你审阅，再开发、换一个 Agent 审查代码，最后发布。
+    when: 新功能要从调研和方案审阅一路做到开发、代码审查和发布时使用。
     steps:
       research: 调研
       design: 设计方案

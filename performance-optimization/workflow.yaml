@@ -1,10 +1,12 @@
 format: 1
 name: Performance optimization
 description: Measure a baseline you can repeat, profile to find what is actually slow, fix it, and keep the change only if the same measurement shows a real gain.
+when: Use for a measurable performance problem when you need to show that a change improves it.
 locales:
   zh-CN:
     name: 性能优化
     description: 先测出能重复的基线，用分析工具找出真正慢的地方再改，同样的测量证明确实变快了才留下改动。
+    when: 遇到可以量化的性能问题，需要用数据证明改动确实有效时使用。
     steps:
       baseline: 测基线
       profile: 找瓶颈

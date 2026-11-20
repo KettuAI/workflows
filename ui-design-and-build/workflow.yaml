@@ -1,10 +1,12 @@
 format: 1
 name: Design and build a UI change
 description: Draft three directions for a screen, let you pick one, build it, then check the result in light and dark and at small and large sizes before review.
+when: Use when a screen needs design options, your choice and a visual check after implementation.
 locales:
   zh-CN:
     name: 界面设计并实现
     description: 先给一个界面画三个方向的草稿，由你挑一个，做出来后在浅色、深色和大小窗口下逐一核对，再审查代码。
+    when: 一个界面需要先看几种设计、选定方向，再实现并检查显示效果时使用。
     steps:
       drafts: 画草稿
       pick: 你来挑

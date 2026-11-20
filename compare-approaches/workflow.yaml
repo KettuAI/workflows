@@ -1,10 +1,12 @@
 format: 1
 name: Compare two approaches
 description: Define the question and how to judge the answer, build two quick prototypes at once in separate branches, then compare them with evidence for your decision.
+when: Use when two viable approaches need hands-on evidence before you choose.
 locales:
   zh-CN:
     name: 两种方案对比
     description: 先定下问题和评判标准，在两个分支里同时做两个快速原型，再用证据对比，交给你决定。
+    when: 有两种可行方案，需要先做原型、拿到实证再决定时使用。
     steps:
       frame: 定问题
       approach-a: 方案 A

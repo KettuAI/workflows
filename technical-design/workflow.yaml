@@ -1,10 +1,12 @@
 format: 1
 name: Technical design
 description: Research the question, then write a design for your review. No code changes.
+when: Use when the next deliverable is a technical design for approval before implementation begins.
 locales:
   zh-CN:
     name: 技术方案
     description: 先调研，再写一份设计交你审阅。不改代码。
+    when: 开始实现前，需要先交一份可供审阅的技术方案时使用。
     steps:
       research: 调研
       design: 设计方案

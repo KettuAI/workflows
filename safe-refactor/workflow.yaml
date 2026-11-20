@@ -1,10 +1,12 @@
 format: 1
 name: Safe refactor
 description: Pin today's behavior with tests first, refactor without changing it, then have another agent confirm nothing changed and no test was weakened.
+when: Use to restructure existing code while preserving behavior that tests can pin down.
 locales:
   zh-CN:
     name: 安全重构
     description: 先用测试钉住现在的行为，再在不改变行为的前提下重构，最后换一个 Agent 确认行为没变、测试没被放松。
+    when: 要调整现有代码结构，并且能用测试锁定原有行为时使用。
     steps:
       plan: 重构计划
       pin: 钉住行为
