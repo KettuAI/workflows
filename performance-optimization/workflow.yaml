@@ -13,6 +13,19 @@ locales:
       optimize: 优化
       measure: 再测量
       review: 代码审查
+    outcomes:
+      baseline:
+        Done: 完成
+      profile:
+        Done: 完成
+      optimize:
+        Done: 完成
+      measure:
+        Faster: 变快了
+        No real gain: 没有明显提升
+      review:
+        Approved: 通过
+        Changes needed: 需要修改
 send_back_limit: 3
 steps:
   - id: baseline

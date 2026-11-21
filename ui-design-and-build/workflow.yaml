@@ -13,6 +13,20 @@ locales:
       build: 实现
       visual-check: 视觉核对
       review: 代码审查
+    outcomes:
+      drafts:
+        Done: 完成
+      pick:
+        Build it: 就做这个
+        New drafts: 重画草稿
+      build:
+        Done: 完成
+      visual-check:
+        Matches: 一致
+        Fix needed: 需要修正
+      review:
+        Approved: 通过
+        Changes needed: 需要修改
 send_back_limit: 3
 steps:
   - id: drafts

@@ -13,6 +13,18 @@ locales:
       security: 审查安全
       consolidate: 核实和汇总
       post: 发布审查
+    outcomes:
+      scope:
+        Done: 完成
+      correctness:
+        Done: 完成
+      security:
+        Done: 完成
+      consolidate:
+        Done: 完成
+      post:
+        Posted: 已发布
+        Not a pull request: 不是 PR
 send_back_limit: 2
 steps:
   - id: scope

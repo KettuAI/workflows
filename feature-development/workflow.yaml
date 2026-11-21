@@ -14,6 +14,22 @@ locales:
       build: 开发
       code-review: 代码审查
       ship: 发布
+    outcomes:
+      research:
+        Worth doing: 值得做
+        Not worth doing: 不值得做
+      design:
+        Done: 完成
+      plan:
+        Done: 完成
+      build:
+        Done: 完成
+      code-review:
+        Approved: 通过
+        Changes needed: 需要修改
+      ship:
+        Merged: 已合并
+        Checks failed: 检查没过
 send_back_limit: 3
 steps:
   - id: research

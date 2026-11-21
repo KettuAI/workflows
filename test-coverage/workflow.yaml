@@ -12,6 +12,18 @@ locales:
       write-tests: 写测试
       review: 审查测试
       bugs: 你来决定
+    outcomes:
+      gaps:
+        Done: 完成
+      write-tests:
+        Done: 完成
+        Found bugs: 发现 bug
+      review:
+        Approved: 通过
+        Changes needed: 需要修改
+      bugs:
+        Keep writing tests: 继续写测试
+        Stop here: 到此为止
 send_back_limit: 3
 steps:
   - id: gaps

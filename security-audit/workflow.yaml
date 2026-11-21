@@ -15,6 +15,24 @@ locales:
       decide: 你来决定
       fix: 修复
       fix-review: 审查修复
+    outcomes:
+      map:
+        Done: 完成
+      hunt:
+        Done: 完成
+      verify:
+        Confirmed: 已确认
+        Nothing confirmed: 都没能确认
+      report:
+        Done: 完成
+      decide:
+        Fix them now: 现在就修
+        Keep the report: 只留报告
+      fix:
+        Done: 完成
+      fix-review:
+        Approved: 通过
+        Changes needed: 需要修改
 send_back_limit: 3
 steps:
   - id: map

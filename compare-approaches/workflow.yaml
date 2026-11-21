@@ -12,6 +12,15 @@ locales:
       approach-a: 方案 A
       approach-b: 方案 B
       compare: 对比
+    outcomes:
+      frame:
+        Done: 完成
+      approach-a:
+        Done: 完成
+      approach-b:
+        Done: 完成
+      compare:
+        Done: 完成
 send_back_limit: 2
 steps:
   - id: frame

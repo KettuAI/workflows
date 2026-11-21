@@ -13,6 +13,18 @@ locales:
       counterpoints: 反面和替代
       synthesize: 写报告
       fact-check: 核实
+    outcomes:
+      scope:
+        Done: 完成
+      evidence:
+        Done: 完成
+      counterpoints:
+        Done: 完成
+      synthesize:
+        Done: 完成
+      fact-check:
+        Accurate: 准确
+        Errors found: 发现错误
 send_back_limit: 2
 steps:
   - id: scope

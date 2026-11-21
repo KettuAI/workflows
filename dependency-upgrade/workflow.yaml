@@ -12,6 +12,17 @@ locales:
       upgrade: 升级
       verify: 验证
       ship: 发布
+    outcomes:
+      survey:
+        Done: 完成
+      upgrade:
+        Done: 完成
+      verify:
+        Passed: 通过
+        Problems: 有问题
+      ship:
+        Opened: 已开 PR
+        Checks failed: 检查没过
 send_back_limit: 3
 steps:
   - id: survey

@@ -13,6 +13,18 @@ locales:
       fix: 修复
       review: 审查修复
       postmortem: 复盘
+    outcomes:
+      evidence:
+        Done: 完成
+      root-cause:
+        Done: 完成
+      fix:
+        Done: 完成
+      review:
+        Approved: 通过
+        Changes needed: 需要修改
+      postmortem:
+        Done: 完成
 send_back_limit: 3
 steps:
   - id: evidence

@@ -11,6 +11,14 @@ locales:
       outline: 大纲
       write: 写作
       fact-check: 核对
+    outcomes:
+      outline:
+        Done: 完成
+      write:
+        Done: 完成
+      fact-check:
+        Accurate: 准确
+        Errors found: 发现错误
 send_back_limit: 3
 steps:
   - id: outline

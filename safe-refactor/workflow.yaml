@@ -12,6 +12,16 @@ locales:
       pin: 钉住行为
       refactor: 重构
       review: 审查
+    outcomes:
+      plan:
+        Done: 完成
+      pin:
+        Done: 完成
+      refactor:
+        Done: 完成
+      review:
+        Approved: 通过
+        Changes needed: 需要修改
 send_back_limit: 3
 steps:
   - id: plan

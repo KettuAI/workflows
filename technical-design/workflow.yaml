@@ -10,6 +10,11 @@ locales:
     steps:
       research: 调研
       design: 设计方案
+    outcomes:
+      research:
+        Done: 完成
+      design:
+        Done: 完成
 send_back_limit: 3
 steps:
   - id: research

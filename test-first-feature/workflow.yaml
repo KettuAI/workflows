@@ -12,6 +12,17 @@ locales:
       tests: 写测试
       build: 开发
       review: 代码审查
+    outcomes:
+      spec:
+        Done: 完成
+      tests:
+        Done: 完成
+      build:
+        Done: 完成
+      review:
+        Approved: 通过
+        Changes needed: 需要修改
+        Tests wrong: 测试有误
 send_back_limit: 3
 steps:
   - id: spec

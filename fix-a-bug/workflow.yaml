@@ -12,6 +12,18 @@ locales:
       fix: 修复
       review: 审查
       ship: 发布
+    outcomes:
+      reproduce:
+        Reproduced: 已复现
+        Cannot reproduce: 复现不了
+      fix:
+        Done: 完成
+      review:
+        Fixed: 已修好
+        Not fixed: 没修好
+      ship:
+        Merged: 已合并
+        Checks failed: 检查没过
 send_back_limit: 3
 steps:
   - id: reproduce
