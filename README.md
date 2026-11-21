@@ -26,7 +26,7 @@ These are published to the Kettu Marketplace by `kettu-labs`. In Kettu, open Mar
 ## Writing one
 
 1. Make a folder named for the workflow, in lowercase with dashes, with `workflow.yaml` at its top and a short `README.md` beside it. The README is shown as plain text on the listing's page, so leave out Markdown syntax.
-2. Write the file in Kettu's workflow format: `format: 1`, a `name` in English, a `description`, other languages under `locales`, and the `steps` in order, the first being the start. Each step has an `id`, a `name`, a `prompt`, who does it (`by: agent` or `you`), what it hands in (`document`, `outcome` or `note`) and its `outcomes`, each going `to` one or more steps or ending the task with `end: done` or `end: dropped`. Never name an agent, a harness or a model: whoever runs the workflow has their own.
+2. Write the file in Kettu's workflow format: `format: 1`, a `name` in English, a `description`, other languages under `locales` (step and outcome names included, which are only shown: a step still reports an outcome by its own name), and the `steps` in order, the first being the start. Each step has an `id`, a `name`, a `prompt`, who does it (`by: agent` or `you`), what it hands in (`document`, `outcome` or `note`) and its `outcomes`, each going `to` one or more steps or ending the task with `end: done` or `end: dropped`. Never name an agent, a harness or a model: whoever runs the workflow has their own.
 3. Check it in Kettu: ask an agent to run `marketplace_check` on the folder, or choose Publish › From a folder in Marketplace › Published. Every problem names the field it is in.
 4. Open a pull request with the folder.
 

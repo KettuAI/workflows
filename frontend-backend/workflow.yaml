@@ -1,10 +1,12 @@
 format: 1
 name: Frontend + backend
 description: Split the work and its interface, build the frontend and the backend at once on their own branches, test them together, review, then ship.
+when: Use for a feature that changes both the frontend and backend and can be split at an agreed interface.
 locales:
   zh-CN:
     name: 前端 + 后端
     description: 先拆分工作和接口，前端和后端各在自己的分支上同时开发，合起来做集成测试，审查后发布。
+    when: 功能同时涉及前端和后端，可以先约定接口再分头开发时使用。
     steps:
       split: 拆分
       frontend: 前端
@@ -12,6 +14,23 @@ locales:
       integration-test: 集成测试
       code-review: 代码审查
       ship: 发布
+    outcomes:
+      split:
+        Done: 完成
+      frontend:
+        Done: 完成
+      backend:
+        Done: 完成
+      integration-test:
+        Passed: 通过
+        Frontend problem: 前端有问题
+        Backend problem: 后端有问题
+      code-review:
+        Approved: 通过
+        Changes needed: 需要修改
+      ship:
+        Merged: 已合并
+        Checks failed: 检查没过
 send_back_limit: 3
 steps:
   - id: split

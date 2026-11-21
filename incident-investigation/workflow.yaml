@@ -1,16 +1,30 @@
 format: 1
 name: Incident investigation
 description: Gather the evidence, find and prove the root cause for your review, fix it with a regression test, and write a blameless postmortem.
+when: Use after a service incident when you need to establish the cause, verify the fix and write a postmortem.
 locales:
   zh-CN:
     name: 故障调查
     description: 收集证据，找到并证明根因交你审阅，带回归测试修好，最后写一份不追责的复盘。
+    when: 服务发生故障后，需要查明原因、验证修复并写复盘时使用。
     steps:
       evidence: 收集证据
       root-cause: 根因分析
       fix: 修复
       review: 审查修复
       postmortem: 复盘
+    outcomes:
+      evidence:
+        Done: 完成
+      root-cause:
+        Done: 完成
+      fix:
+        Done: 完成
+      review:
+        Approved: 通过
+        Changes needed: 需要修改
+      postmortem:
+        Done: 完成
 send_back_limit: 3
 steps:
   - id: evidence

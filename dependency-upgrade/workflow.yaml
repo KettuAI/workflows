@@ -1,15 +1,28 @@
 format: 1
 name: Dependency upgrade
 description: Survey outdated dependencies and their breaking changes, upgrade them in the order you approve, verify the build and tests, then open a pull request.
+when: Use for dependency upgrades that may break compatibility and need a planned rollout.
 locales:
   zh-CN:
     name: 依赖升级
     description: 先盘点过时的依赖和它们的破坏性变更，按你批准的顺序升级，验证构建和测试，再开 Pull Request。
+    when: 升级依赖可能影响兼容性，需要先定升级顺序并逐项验证时使用。
     steps:
       survey: 盘点
       upgrade: 升级
       verify: 验证
       ship: 发布
+    outcomes:
+      survey:
+        Done: 完成
+      upgrade:
+        Done: 完成
+      verify:
+        Passed: 通过
+        Problems: 有问题
+      ship:
+        Opened: 已开 PR
+        Checks failed: 检查没过
 send_back_limit: 3
 steps:
   - id: survey

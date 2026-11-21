@@ -1,15 +1,29 @@
 format: 1
 name: Fix a bug
 description: Reproduce the bug, fix it with a test, review the fix on another agent, then ship it.
+when: Use for a bug that needs a reproducible case, a regression test and a reviewed fix.
 locales:
   zh-CN:
     name: 修复 Bug
     description: 先复现，再带着测试修复，换一个 Agent 审查修复，最后发布。
+    when: 修复前需要稳定复现，修复后需要回归测试和独立审查时使用。
     steps:
       reproduce: 复现
       fix: 修复
       review: 审查
       ship: 发布
+    outcomes:
+      reproduce:
+        Reproduced: 已复现
+        Cannot reproduce: 复现不了
+      fix:
+        Done: 完成
+      review:
+        Fixed: 已修好
+        Not fixed: 没修好
+      ship:
+        Merged: 已合并
+        Checks failed: 检查没过
 send_back_limit: 3
 steps:
   - id: reproduce

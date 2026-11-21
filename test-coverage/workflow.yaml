@@ -1,15 +1,29 @@
 format: 1
 name: Increase test coverage
 description: Find the untested code that matters most, write tests that fail when it breaks, and have another agent check they test something real.
+when: Use when important existing code has gaps in its tests and you need to verify that new tests catch failures.
 locales:
   zh-CN:
     name: 补测试
     description: 找出最要紧却没有测试的代码，写出它一坏就会失败的测试，再换一个 Agent 检查这些测试是不是真的在测东西。
+    when: 现有关键代码缺少测试，需要补齐并验证测试能发现故障时使用。
     steps:
       gaps: 找缺口
       write-tests: 写测试
       review: 审查测试
       bugs: 你来决定
+    outcomes:
+      gaps:
+        Done: 完成
+      write-tests:
+        Done: 完成
+        Found bugs: 发现 bug
+      review:
+        Approved: 通过
+        Changes needed: 需要修改
+      bugs:
+        Keep writing tests: 继续写测试
+        Stop here: 到此为止
 send_back_limit: 3
 steps:
   - id: gaps

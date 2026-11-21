@@ -1,16 +1,30 @@
 format: 1
 name: Research report
 description: Agree the questions with you, research them from two angles at once, write one report with sources, and fact-check every claim before you get it.
+when: Use when an open question needs several sources, independent lines of inquiry and a fact-checked report.
 locales:
   zh-CN:
     name: 调研报告
     description: 先和你定下要回答的问题，再从两个角度同时调研，写成一份带出处的报告，交给你之前逐条核实。
+    when: 一个开放问题需要查多方资料、从不同角度核实并交付报告时使用。
     steps:
       scope: 定范围
       evidence: 正面证据
       counterpoints: 反面和替代
       synthesize: 写报告
       fact-check: 核实
+    outcomes:
+      scope:
+        Done: 完成
+      evidence:
+        Done: 完成
+      counterpoints:
+        Done: 完成
+      synthesize:
+        Done: 完成
+      fact-check:
+        Accurate: 准确
+        Errors found: 发现错误
 send_back_limit: 2
 steps:
   - id: scope
